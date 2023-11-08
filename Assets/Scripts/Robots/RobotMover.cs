@@ -15,12 +15,8 @@ public class RobotMover : MonoBehaviour
         _target = target;
     }
 
-    public void SetDestination(Transform destination){
-        _destination = destination;
-    }
-
-    public void Move(){
-        transform.position = Vector3.Lerp(transform.position, _target.position, Time.deltaTime / _delay);
+    public void Move(Transform target){
+        transform.position = Vector3.Lerp(transform.position, target.position, Time.deltaTime / _delay);
     }
 
     public void PickUpOre(){
