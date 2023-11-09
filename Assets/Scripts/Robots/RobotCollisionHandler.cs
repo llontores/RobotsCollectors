@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public class RobotCollisionHandler : MonoBehaviour
 {
-    public event UnityAction TouchedOre;
+    public event UnityAction GetOre;
     private Ore _target;
 
     private void OnCollisionEnter(Collision collision)
@@ -14,7 +14,8 @@ public class RobotCollisionHandler : MonoBehaviour
         {
             if (ore == _target)
             {
-                TouchedOre?.Invoke();
+                print("я приехал к руде");
+                //GetOre?.Invoke();
             }
         }
     }

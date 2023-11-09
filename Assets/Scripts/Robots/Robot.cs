@@ -5,9 +5,9 @@ using UnityEngine;
 [RequireComponent(typeof(RobotMover))]
 public class Robot : MonoBehaviour
 {
-    [SerializeField] private Transform _handlePoint;
-    [SerializeField] private float _handleRadius;
-    [SerializeField] private LayerMask _mask;
+    //[SerializeField] private Transform _handlePoint;
+    //[SerializeField] private float _handleRadius;
+    //[SerializeField] private LayerMask _mask;
     [SerializeField] private RobotCollisionHandler _handler;
     private RobotMover _mover;
     private Ore _target;
@@ -16,12 +16,12 @@ public class Robot : MonoBehaviour
 
     private void OnEnable()
     {
-        _handler.TouchedOre += GetBack;
+        _handler.GetOre += GetBack;
     }
 
     private void OnDisable()
     {
-        _handler.TouchedOre -= GetBack;
+        _handler.GetOre -= GetBack;
     }
 
     private void Awake()
@@ -42,14 +42,14 @@ public class Robot : MonoBehaviour
     {
         if(transform.position != _target.gameObject.transform.position && _target != null)
         {
-            _mover.Move(_target.gameObject.transform);
+            _mover.Move(_target.gameObject.transform,_startPosition.position);
         }
     }
 
     private void GetBack()
     {
         _mover.PickUpOre();
-        _mover.Move(_startPosition);
+        _mover.Move(_startPosition,transform.position);
         _target = null;
         IsUsing = false;
     }

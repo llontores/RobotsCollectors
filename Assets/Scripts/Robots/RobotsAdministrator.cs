@@ -19,10 +19,16 @@ public class RobotsAdministrator : MonoBehaviour
 
     private void Update()
     {
-        if(_ores != null)
+        if (_ores != null && _ores.Count > 0)
         {
-            Robot result  = _robots.FirstOrDefault(robot => robot.IsUsing == false);
-            result.BringOre(_ores[0]);
+            Robot result = _robots.FirstOrDefault(robot => robot != null && robot.IsUsing == false);
+
+            if (result != null)
+            {
+                Ore ore = _ores[0];
+                result.BringOre(ore);
+                _ores.Remove(ore);
+            }
         }
     }
 }
