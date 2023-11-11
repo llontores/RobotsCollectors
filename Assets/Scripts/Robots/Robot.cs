@@ -5,53 +5,79 @@ using UnityEngine;
 [RequireComponent(typeof(RobotMover))]
 public class Robot : MonoBehaviour
 {
-    //[SerializeField] private Transform _handlePoint;
-    //[SerializeField] private float _handleRadius;
-    //[SerializeField] private LayerMask _mask;
     [SerializeField] private RobotCollisionHandler _handler;
+    [SerializeField] private Transform _storage;
+    public bool IsUsing { get; private set; }
+
     private RobotMover _mover;
     private Ore _target;
-    private Transform _startPosition;
-    public bool IsUsing { get; private set; }
+    private Vector3 _targetPosition;
+    private Vector3 _startPosition;
+    private Coroutine _moveJob;
+    private bool _haveGetDestination;
 
     private void OnEnable()
     {
         _handler.GetOre += GetBack;
+        _handler.GetOre += CountGettingdestination;
+
     }
 
     private void OnDisable()
     {
         _handler.GetOre -= GetBack;
+        _handler.GetOre -= CountGettingdestination;
     }
 
     private void Awake()
     {
         _mover = GetComponent<RobotMover>();
-        _startPosition = transform;
+        _startPosition = transform.position;
+        IsUsing = false;
     }
 
     public void BringOre(Ore target)
     {
         _target = target;
-        _mover.SetTarget(_target.gameObject.transform);
+        _mover.SetParametres(_target.gameObject.transform,_storage.position,_startPosition);
         _handler.SetTarget(_target);
+        _targetPosition = _target.gameObject.transform.position;
         IsUsing = true;
+        StartCoroutine(Move(_targetPosition));
     }
 
-    private void Update()
-    {
-        if(transform.position != _target.gameObject.transform.position && _target != null)
-        {
-            _mover.Move(_target.gameObject.transform,_startPosition.position);
-        }
-    }
 
     private void GetBack()
     {
+        _targetPosition = _startPosition;
         _mover.PickUpOre();
-        _mover.Move(_startPosition,transform.position);
-        _target = null;
-        IsUsing = false;
+        StartCoroutine(Move(_targetPosition));
+    }
+
+    private IEnumerator Move(Vector3 targetPosition)
+    {
+        while (_haveGetDestination != true)
+        {
+            _mover.Move(targetPosition);
+
+            yield return null;
+        }
+
+        EndMoveJob();
+        print("я достиг цели");
+    }
+
+    private void EndMoveJob()
+    {
+        if (_moveJob != null)
+            StopCoroutine(_moveJob);
+
+        _haveGetDestination = false;
+    }
+
+    private void CountGettingdestination()
+    {
+        _haveGetDestination = true;
     }
 
 }

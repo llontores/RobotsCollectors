@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -123,6 +123,37 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &198697755
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 198697756}
+  m_Layer: 0
+  m_Name: Storage
+  m_TagString: Untagged
+  m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &198697756
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 198697755}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 282.17, y: 1.716, z: 183.23143}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &298262243
 GameObject:
   m_ObjectHideFlags: 0
@@ -197,7 +228,7 @@ MonoBehaviour:
   _minZ: 0
   _maxZ: 0
   _minAmount: 1
-  _maxAmount: 3
+  _maxAmount: 1
 --- !u!4 &333471878
 Transform:
   m_ObjectHideFlags: 0
@@ -234,7 +265,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &371035305
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -260,6 +291,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _handler: {fileID: 371035305}
+  _storage: {fileID: 0}
 --- !u!114 &371035307
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -578,8 +610,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _robots:
   - {fileID: 1859426522}
-  - {fileID: 371035306}
-  - {fileID: 984003730}
 --- !u!4 &872092127
 Transform:
   m_ObjectHideFlags: 0
@@ -708,7 +738,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &984003729
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -734,6 +764,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _handler: {fileID: 984003729}
+  _storage: {fileID: 0}
 --- !u!114 &984003731
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -909,7 +940,7 @@ GameObject:
   - component: {fileID: 1355491171}
   - component: {fileID: 1355491173}
   m_Layer: 0
-  m_Name: Base
+  m_Name: Mine
   m_TagString: Untagged
   m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -979,6 +1010,7 @@ GameObject:
   - component: {fileID: 1859426523}
   - component: {fileID: 1859426522}
   - component: {fileID: 1859426521}
+  - component: {fileID: 1859426528}
   m_Layer: 0
   m_Name: Robot
   m_TagString: Untagged
@@ -1011,6 +1043,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _handler: {fileID: 1859426521}
+  _storage: {fileID: 198697756}
 --- !u!114 &1859426523
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1112,6 +1145,33 @@ Transform:
   - {fileID: 1092306253}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &1859426528
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1859426520}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 80
+  m_CollisionDetection: 0
 --- !u!1 &1927115302
 GameObject:
   m_ObjectHideFlags: 0
@@ -1157,3 +1217,4 @@ SceneRoots:
   - {fileID: 1859426527}
   - {fileID: 371035311}
   - {fileID: 984003735}
+  - {fileID: 198697756}

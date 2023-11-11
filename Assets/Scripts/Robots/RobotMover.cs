@@ -6,43 +6,42 @@ public class RobotMover : MonoBehaviour
 {
     [SerializeField] private float _speed;
     [SerializeField] private Transform _inventoryPoint;
-    
-    private Transform _destination;
+
+    private Vector3 _destination;
     private Transform _target;
     private Coroutine _moveOreJob;
+    private Vector3 _storage;
+    private Vector3 _startPosition;
 
-    public void SetTarget(Transform target){
+    public void SetParametres(Transform target,Vector3 storage,Vector3 startPosition){
         _target = target;
+        _storage = storage;
+        _startPosition = startPosition;
     }
 
-    public void Move(Transform target,Vector3 startPosition){
-        //transform.position = Vector3.Lerp(startPosition, target.position, Time.deltaTime / _speed);
-        //transform.position = Vector3.MoveTowards(transform.position,transform.position, _speed);
-        // Направление к цели
-        Vector3 direction = (target.position - transform.position).normalized;
-
-        // Движение к цели
+    public void Move(Vector3 target){
+        Vector3 direction = (target - transform.position).normalized;
         transform.Translate(direction * _speed * Time.deltaTime);
-
-        // Поворот объекта, чтобы он всегда смотрел на цель
-        transform.LookAt(target);
     }
 
     public void PickUpOre(){
-        _moveOreJob = StartCoroutine(MoveOre(_destination));
+        _moveOreJob = StartCoroutine(MoveOre(_startPosition));
     }
 
     public void PutOre(){
         StopCoroutine(_moveOreJob);
-        _target.position = _destination.position;
+        _target.position = _storage;
     }
 
-    private IEnumerator MoveOre(Transform destination){
-        while(_target.position != _destination.position){
+    private IEnumerator MoveOre(Vector3 destination){
 
+        while(transform.position.x != destination.x && transform.position.z != destination.z)
+        {
             _target.position = _inventoryPoint.position;
 
             yield return null;
         }
+
+        PutOre();
     }
 }
