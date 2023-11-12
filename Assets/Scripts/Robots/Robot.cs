@@ -50,8 +50,9 @@ public class Robot : MonoBehaviour
     private void GetBack()
     {
         _targetPosition = _startPosition;
-        _mover.PickUpOre();
+        _haveGetDestination = false;
         StartCoroutine(Move(_targetPosition));
+        _mover.PickUpOre();
     }
 
     private IEnumerator Move(Vector3 targetPosition)
