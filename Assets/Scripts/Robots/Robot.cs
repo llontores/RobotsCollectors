@@ -7,26 +7,23 @@ public class Robot : MonoBehaviour
 {
     [SerializeField] private RobotCollisionHandler _handler;
     [SerializeField] private Transform _storage;
+    [SerializeField] private float _getTargetDistance;
     public bool IsUsing { get; private set; }
 
     private RobotMover _mover;
-    private Ore _target;
-    private Vector3 _targetPosition;
     private Vector3 _startPosition;
     private Coroutine _moveJob;
-    private bool _haveGetDestination;
 
     private void OnEnable()
     {
         _handler.GetOre += GetBack;
-        _handler.GetOre += CountGettingdestination;
-
+        _handler.GetBaseBack += GetBase;
     }
-
+     
     private void OnDisable()
     {
         _handler.GetOre -= GetBack;
-        _handler.GetOre -= CountGettingdestination;
+        _handler.GetBaseBack -= GetBase;
     }
 
     private void Awake()
@@ -36,49 +33,40 @@ public class Robot : MonoBehaviour
         IsUsing = false;
     }
 
-    public void BringOre(Ore target)
+    private void EndMoveJob()
     {
-        _target = target;
-        _mover.SetParametres(_target.gameObject.transform,_storage.position,_startPosition);
-        _handler.SetTarget(_target);
-        _targetPosition = _target.gameObject.transform.position;
-        IsUsing = true;
-        StartCoroutine(Move(_targetPosition));
+        if (_moveJob != null)
+            StopCoroutine(_moveJob);
     }
 
-
-    private void GetBack()
+    public void BringOre(Ore target)
     {
-        _targetPosition = _startPosition;
-        _haveGetDestination = false;
-        StartCoroutine(Move(_targetPosition));
-        _mover.PickUpOre();
+        _mover.SetParametres(target.gameObject.transform, _storage.position, _startPosition);
+        IsUsing = true;
+        _moveJob = StartCoroutine(Move(target.gameObject.transform.position));
+        _handler.SetTarget(target);
     }
 
     private IEnumerator Move(Vector3 targetPosition)
     {
-        while (_haveGetDestination != true)
+        while(Vector3.Distance(transform.position,targetPosition) > _getTargetDistance)
         {
             _mover.Move(targetPosition);
 
             yield return null;
         }
+    }
 
+    private void GetBack()
+    {
         EndMoveJob();
-        print("я достиг цели");
+        _mover.PickUpOre(_getTargetDistance);
+        _moveJob = StartCoroutine(Move(_startPosition));
     }
 
-    private void EndMoveJob()
+    private void GetBase()
     {
-        if (_moveJob != null)
-            StopCoroutine(_moveJob);
-
-        _haveGetDestination = false;
+        EndMoveJob();
+        IsUsing = false;
     }
-
-    private void CountGettingdestination()
-    {
-        _haveGetDestination = true;
-    }
-
 }

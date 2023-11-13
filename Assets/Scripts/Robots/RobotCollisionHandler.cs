@@ -6,7 +6,7 @@ using UnityEngine.Events;
 public class RobotCollisionHandler : MonoBehaviour
 {
     public event UnityAction GetOre;
-    public event UnityAction GetDestination;
+    public event UnityAction GetBaseBack;
     private Ore _target;
 
     private void OnCollisionEnter(Collision collision)
@@ -17,6 +17,14 @@ public class RobotCollisionHandler : MonoBehaviour
             {
                 GetOre?.Invoke();
             }
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.TryGetComponent(out CollectorsBase collectorsBase))
+        {
+            GetBaseBack?.Invoke();
         }
     }
 

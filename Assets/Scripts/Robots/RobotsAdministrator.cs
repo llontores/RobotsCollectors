@@ -7,28 +7,25 @@ public class RobotsAdministrator : MonoBehaviour
 {
     [SerializeField] private Robot[] _robots;
 
-    private List<Ore> _ores = new List<Ore>();
+    private Queue<Ore> _ores = new Queue<Ore>();
 
-    public void TryAddOre(Ore ore)
+    public void AddOre(Ore ore)
     {
-        if(_ores.Contains(ore) == false)
-        {
-            _ores.Add(ore);
-        }
+        _ores.Enqueue(ore);
+        print("пуки");
+        TryAskRobot();
     }
 
-    private void Update()
+    private void TryAskRobot()
     {
-        if (_ores != null && _ores.Count > 0)
-        {
-            Robot result = _robots.FirstOrDefault(robot => robot != null && robot.IsUsing == false);
+        Robot result = _robots.FirstOrDefault(robot => robot.IsUsing == false);
 
-            if (result != null)
-            {
-                Ore ore = _ores[0];
-                result.BringOre(ore);
-                _ores.Remove(ore);
-            }
+
+        if (result != null)
+        {
+            Ore currentOre = _ores.Dequeue();
+            print(currentOre.gameObject.transform.position);
+            result.BringOre(currentOre);
         }
     }
 }

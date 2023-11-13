@@ -24,8 +24,9 @@ public class RobotMover : MonoBehaviour
         transform.Translate(direction * _speed * Time.deltaTime);
     }
 
-    public void PickUpOre(){
-        _moveOreJob = StartCoroutine(MoveOre(_startPosition));
+    public void PickUpOre(float getTargetDistance)
+    {
+        _moveOreJob = StartCoroutine(MoveOre(_startPosition,getTargetDistance));
     }
 
     public void PutOre(){
@@ -33,9 +34,9 @@ public class RobotMover : MonoBehaviour
         _target.position = _storage;
     }
 
-    private IEnumerator MoveOre(Vector3 destination){
+    private IEnumerator MoveOre(Vector3 destination,float getTargetDistance){
 
-        while(transform.position.x != destination.x && transform.position.z != destination.z)
+        while(Vector3.Distance(transform.position, destination) > getTargetDistance)
         {
             _target.position = _inventoryPoint.position;
 
