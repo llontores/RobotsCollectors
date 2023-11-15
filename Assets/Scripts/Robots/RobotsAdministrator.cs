@@ -9,22 +9,36 @@ public class RobotsAdministrator : MonoBehaviour
 
     private Queue<Ore> _ores = new Queue<Ore>();
 
+    private void OnEnable()
+    {
+        for (int i = 0; i < _robots.Length; i++)
+        {
+            _robots[i].StateChanged += TryAskRobot;
+        }
+    }
+
+    private void OnDisable()
+    {
+        for (int i = 0; i < _robots.Length; i++)
+        {
+            _robots[i].StateChanged -= TryAskRobot;
+        }
+    }
+
     public void AddOre(Ore ore)
     {
         _ores.Enqueue(ore);
-        print("пуки");
         TryAskRobot();
     }
 
     private void TryAskRobot()
     {
+
         Robot result = _robots.FirstOrDefault(robot => robot.IsUsing == false);
 
-
-        if (result != null)
+        if (result != null && _ores.Count > 0)
         {
             Ore currentOre = _ores.Dequeue();
-            print(currentOre.gameObject.transform.position);
             result.BringOre(currentOre);
         }
     }

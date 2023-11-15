@@ -16,7 +16,7 @@ public class Spawner : ObjectPool
 
     public event UnityAction<Ore> OreSpawned;
 
-    private void Awake(){
+    private void Start(){
         Initialize(_prefabs);
         StartCoroutine(SpawnOres());
     }
@@ -24,7 +24,6 @@ public class Spawner : ObjectPool
     private IEnumerator SpawnOres(){
         WaitForSeconds delay = new WaitForSeconds(_delay);
         GameObject resource;
-        Ore crystal;
         int amount = Random.Range(_minAmount,_maxAmount);
         float xPos;
         float zPos;
@@ -39,8 +38,7 @@ public class Spawner : ObjectPool
                     xPos = Random.Range(_minX + transform.position.x,_maxX + transform.position.x);
                     zPos = Random.Range(_minZ + transform.position.z,_maxZ + transform.position.z);
                     resource.transform.position = new Vector3(xPos,transform.position.y,zPos);
-                    crystal = resource.GetComponent<Ore>();
-                    OreSpawned?.Invoke(crystal);
+                    OreSpawned?.Invoke(resource.GetComponent<Ore>());
                 }
             }
 

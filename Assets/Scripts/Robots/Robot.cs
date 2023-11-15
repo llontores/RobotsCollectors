@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(RobotMover))]
 public class Robot : MonoBehaviour
@@ -9,9 +10,11 @@ public class Robot : MonoBehaviour
     [SerializeField] private Transform _storage;
     [SerializeField] private float _getTargetDistance;
     public bool IsUsing { get; private set; }
+    public event UnityAction OreBrought;
+    public event UnityAction StateChanged;
 
     private RobotMover _mover;
-    private Vector3 _startPosition;
+    [SerializeField] private Transform _startPosition;
     private Coroutine _moveJob;
 
     private void OnEnable()
@@ -29,7 +32,6 @@ public class Robot : MonoBehaviour
     private void Awake()
     {
         _mover = GetComponent<RobotMover>();
-        _startPosition = transform.position;
         IsUsing = false;
     }
 
@@ -41,10 +43,11 @@ public class Robot : MonoBehaviour
 
     public void BringOre(Ore target)
     {
-        _mover.SetParametres(target.gameObject.transform, _storage.position, _startPosition);
-        IsUsing = true;
+        _mover.SetParametres(target.gameObject.transform, _storage.position, _startPosition.position);
         _moveJob = StartCoroutine(Move(target.gameObject.transform.position));
+        IsUsing = true;
         _handler.SetTarget(target);
+        print(target.gameObject.name);
     }
 
     private IEnumerator Move(Vector3 targetPosition)
@@ -61,12 +64,16 @@ public class Robot : MonoBehaviour
     {
         EndMoveJob();
         _mover.PickUpOre(_getTargetDistance);
-        _moveJob = StartCoroutine(Move(_startPosition));
+        _moveJob = StartCoroutine(Move(_startPosition.position));
     }
 
     private void GetBase()
     {
-        EndMoveJob();
+        print("я на базе");
+        if(IsUsing == true)
+            EndMoveJob();
+        OreBrought?.Invoke();
         IsUsing = false;
+        StateChanged?.Invoke();
     }
 }

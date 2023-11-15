@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -147,12 +147,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 198697755}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 282.17, y: 1.716, z: 183.23143}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 3.48, y: 1.052, z: 0.38342285}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1506576267}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &298262243
 GameObject:
@@ -221,14 +221,13 @@ MonoBehaviour:
   - {fileID: 6357866527272821121, guid: 511badf69a0e2924784b9763a3a1754b, type: 3}
   - {fileID: 3154300133908001031, guid: 453f9c6bb5a19f44d82c700efe983ff3, type: 3}
   - {fileID: 6761972899371599171, guid: d888ad064df6fa047b4c3e5a8f3a3116, type: 3}
-  - {fileID: 8515770213014836639, guid: 1b18dcba7952b15409c0dd537ce98ebd, type: 3}
   _delay: 10000
   _minX: -10
   _maxX: 10
   _minZ: -10
   _maxZ: 10
   _minAmount: 2
-  _maxAmount: 3
+  _maxAmount: 6
 --- !u!4 &333471878
 Transform:
   m_ObjectHideFlags: 0
@@ -238,7 +237,7 @@ Transform:
   m_GameObject: {fileID: 333471876}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 254.5, y: 7.8, z: 177.1}
+  m_LocalPosition: {x: 254.5, y: 1.81, z: 177.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -261,7 +260,7 @@ GameObject:
   - component: {fileID: 622412928}
   - component: {fileID: 622412927}
   m_Layer: 0
-  m_Name: Robot (1)
+  m_Name: Robot 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -320,7 +319,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _handler: {fileID: 622412928}
   _storage: {fileID: 198697756}
-  _getTargetDistance: 0.5
+  _getTargetDistance: 1
+  _startPosition: {fileID: 1506576267}
 --- !u!114 &622412930
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -335,6 +335,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 5
   _inventoryPoint: {fileID: 1631951057}
+  _handler: {fileID: 0}
 --- !u!65 &622412931
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -415,7 +416,7 @@ Transform:
   m_GameObject: {fileID: 622412926}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 280.015, y: 0.8, z: 181.399}
+  m_LocalPosition: {x: 276.6, y: 0.8, z: 181.399}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -938,10 +939,11 @@ Transform:
   m_GameObject: {fileID: 1506576264}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 280.88507, y: 0.77958703, z: 182.848}
+  m_LocalPosition: {x: 278.62, y: 0.664, z: 182.848}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 198697756}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1631951056
@@ -992,7 +994,7 @@ GameObject:
   - component: {fileID: 1743727508}
   - component: {fileID: 1743727507}
   m_Layer: 0
-  m_Name: Robot (2)
+  m_Name: Robot 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1051,7 +1053,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _handler: {fileID: 1743727508}
   _storage: {fileID: 198697756}
-  _getTargetDistance: 0.5
+  _getTargetDistance: 1
+  _startPosition: {fileID: 1506576267}
 --- !u!114 &1743727510
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1066,6 +1069,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 5
   _inventoryPoint: {fileID: 763775486}
+  _handler: {fileID: 0}
 --- !u!65 &1743727511
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1146,7 +1150,7 @@ Transform:
   m_GameObject: {fileID: 1743727506}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 280.015, y: 0.8, z: 184.167}
+  m_LocalPosition: {x: 276.6, y: 0.8, z: 184.167}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1170,7 +1174,7 @@ GameObject:
   - component: {fileID: 1859426521}
   - component: {fileID: 1859426528}
   m_Layer: 0
-  m_Name: Robot
+  m_Name: Robot 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1202,7 +1206,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _handler: {fileID: 1859426521}
   _storage: {fileID: 198697756}
-  _getTargetDistance: 0.5
+  _getTargetDistance: 1
+  _startPosition: {fileID: 1506576267}
 --- !u!114 &1859426523
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1217,6 +1222,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 5
   _inventoryPoint: {fileID: 1092306253}
+  _handler: {fileID: 1859426521}
 --- !u!65 &1859426524
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1297,7 +1303,7 @@ Transform:
   m_GameObject: {fileID: 1859426520}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 280.015, y: 0.8, z: 182.79619}
+  m_LocalPosition: {x: 276.706, y: 0.8, z: 182.79619}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1345,5 +1351,4 @@ SceneRoots:
   - {fileID: 1859426527}
   - {fileID: 622412934}
   - {fileID: 1743727514}
-  - {fileID: 198697756}
   - {fileID: 1506576267}

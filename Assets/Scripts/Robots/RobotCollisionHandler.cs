@@ -24,6 +24,7 @@ public class RobotCollisionHandler : MonoBehaviour
     {
         if(other.TryGetComponent(out CollectorsBase collectorsBase))
         {
+            print("я достиг базы");
             GetBaseBack?.Invoke();
         }
     }
