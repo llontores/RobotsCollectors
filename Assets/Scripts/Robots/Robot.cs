@@ -8,14 +8,16 @@ public class Robot : MonoBehaviour
 {
     [SerializeField] private RobotCollisionHandler _handler;
     [SerializeField] private Transform _storage;
+    [SerializeField] private Transform _startPosition;
     [SerializeField] private float _getTargetDistance;
     public bool IsUsing { get; private set; }
-    public event UnityAction OreBrought;
+    public event UnityAction<Ore> OreBrought;
     public event UnityAction StateChanged;
 
     private RobotMover _mover;
-    [SerializeField] private Transform _startPosition;
+    private Ore _target;
     private Coroutine _moveJob;
+    private Vector3 _targetPosition;
 
     private void OnEnable()
     {
@@ -43,18 +45,18 @@ public class Robot : MonoBehaviour
 
     public void BringOre(Ore target)
     {
-        _mover.SetParametres(target.gameObject.transform, _storage.position, _startPosition.position);
-        _moveJob = StartCoroutine(Move(target.gameObject.transform.position));
+        _target = target;
+        _mover.SetParametres(_target.gameObject.transform, _storage.position, _startPosition.position);
+        _moveJob = StartCoroutine(Move(_target.gameObject.transform));
         IsUsing = true;
-        _handler.SetTarget(target);
-        print(target.gameObject.name);
+        _handler.SetTarget(_target);
     }
 
-    private IEnumerator Move(Vector3 targetPosition)
+    private IEnumerator Move(Transform targetPosition)
     {
-        while(Vector3.Distance(transform.position,targetPosition) > _getTargetDistance)
+        while(Vector3.Distance(transform.position,targetPosition.position) > _getTargetDistance)
         {
-            _mover.Move(targetPosition);
+            _mover.Move(targetPosition.position);
 
             yield return null;
         }
@@ -64,16 +66,20 @@ public class Robot : MonoBehaviour
     {
         EndMoveJob();
         _mover.PickUpOre(_getTargetDistance);
-        _moveJob = StartCoroutine(Move(_startPosition.position));
+        _moveJob = StartCoroutine(Move(_startPosition));
     }
 
     private void GetBase()
     {
-        print("я на базе");
         if(IsUsing == true)
             EndMoveJob();
-        OreBrought?.Invoke();
+        OreBrought?.Invoke(_target);
         IsUsing = false;
         StateChanged?.Invoke();
     }
+
+    //private void Update()
+    //{
+    //    _targetPosition = _target.gameObject.transform.position;
+    //}
 }

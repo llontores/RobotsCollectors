@@ -14,19 +14,15 @@ public class RobotCollisionHandler : MonoBehaviour
         if (collision.collider.TryGetComponent(out Ore ore))
         {
             if (ore == _target)
-            {
                 GetOre?.Invoke();
-            }
+            
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.TryGetComponent(out CollectorsBase collectorsBase))
-        {
-            print("я достиг базы");
+        if(other.TryGetComponent(out CollectorsBase collectorsBase))        
             GetBaseBack?.Invoke();
-        }
     }
 
     public void SetTarget(Ore target)
