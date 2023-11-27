@@ -10,7 +10,6 @@ public class ObjectPool : MonoBehaviour
 
     private List<GameObject> _pool = new List<GameObject>();
 
-
     protected void Initialize(GameObject[] prefabs){
 
         for(int i = 0; i < _amount; i++)

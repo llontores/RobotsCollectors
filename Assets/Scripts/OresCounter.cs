@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class OresCounter : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class OresCounter : MonoBehaviour
     [SerializeField] private TMP_Text _text;
 
     private int _counter;
+    public event UnityAction<int> OreCollected;
 
     private void OnEnable()
     {
@@ -30,6 +32,13 @@ public class OresCounter : MonoBehaviour
     private void IncreaseOres(Ore ore)
     {
         _counter++;
+        _text.text = _staticText + _counter.ToString();
+        OreCollected?.Invoke(_counter);
+    }
+
+    public void SpendOres(int ores)
+    {
+        _counter -= ores;
         _text.text = _staticText + _counter.ToString();
     }
 }

@@ -77,9 +77,4 @@ public class Robot : MonoBehaviour
         IsUsing = false;
         StateChanged?.Invoke();
     }
-
-    //private void Update()
-    //{
-    //    _targetPosition = _target.gameObject.transform.position;
-    //}
 }
