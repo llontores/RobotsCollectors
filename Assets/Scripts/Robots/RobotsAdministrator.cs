@@ -8,16 +8,23 @@ public class RobotsAdministrator : MonoBehaviour
     [SerializeField] private Transform _base;
     [SerializeField] private Robot _robotsPrefab;
     [SerializeField] private Robot[] _inputRobots;
+    [SerializeField] private Transform _storage;
 
     private Queue<Ore> _ores = new Queue<Ore>();
     private List<Robot> _robots = new List<Robot>();
 
-    private void OnEnable()
+    private void Awake()
     {
         for (int i = 0; i < _inputRobots.Length; i++)
         {
             _robots.Add(_inputRobots[i]);
+            _robots[i].SetBase(_base, _storage);
         }
+    }
+
+    private void OnEnable()
+    {
+
         for (int i = 0; i < _robots.Count; i++)
         {
             _robots[i].StateChanged += TryAskRobot;
@@ -40,7 +47,6 @@ public class RobotsAdministrator : MonoBehaviour
 
     private void TryAskRobot()
     {
-
         Robot result = _robots.FirstOrDefault(robot => robot.IsUsing == false);
 
         if (result != null && _ores.Count > 0)
@@ -53,6 +59,8 @@ public class RobotsAdministrator : MonoBehaviour
     public void TryAddRobot()
     {
         Robot addedRobot = Instantiate(_robotsPrefab, _base.position,Quaternion.identity);
-        _robots.Add(addedRobot);     
+        addedRobot.SetBase(_base, _storage);
+        _robots.Add(addedRobot);
+        TryAskRobot();
     }
 }

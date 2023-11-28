@@ -7,13 +7,13 @@ using UnityEngine.Events;
 public class Robot : MonoBehaviour
 {
     [SerializeField] private RobotCollisionHandler _handler;
-    [SerializeField] private Transform _storage;
-    [SerializeField] private Transform _startPosition;
     [SerializeField] private float _getTargetDistance;
     public bool IsUsing { get; private set; }
     public event UnityAction<Ore> OreBrought;
     public event UnityAction StateChanged;
 
+    private Transform _storage;
+    private Transform _startPosition;
     private RobotMover _mover;
     private Ore _target;
     private Coroutine _moveJob;
@@ -36,6 +36,21 @@ public class Robot : MonoBehaviour
         _mover = GetComponent<RobotMover>();
         IsUsing = false;
     }
+    public void BringOre(Ore target)
+    {
+        _target = target;
+        _mover.SetParametres(_target.gameObject.transform, _storage.position, _startPosition.position);
+        _moveJob = StartCoroutine(Move(_target.gameObject.transform));
+        IsUsing = true;
+        _handler.SetTarget(target);
+        _handler.SetTarget(_target);
+    }
+
+    public void SetBase(Transform robotsBase,Transform storage)
+    {
+        _startPosition = robotsBase;
+        _storage = storage;
+    }
 
     private void EndMoveJob()
     {
@@ -43,21 +58,6 @@ public class Robot : MonoBehaviour
             StopCoroutine(_moveJob);
     }
 
-    public void BringOre(Ore target)
-    {
-        _target = target;
-        _mover.SetParametres(_target.gameObject.transform, _storage.position, _startPosition.position);
-        _moveJob = StartCoroutine(Move(_target.gameObject.transform));
-        IsUsing = true;
-<<<<<<< HEAD
-        _handler.SetTarget(target);
-        print(target.gameObject.name);     
-
-
-=======
-        _handler.SetTarget(_target);
->>>>>>> 4e7267ab0656a14fe24d23465a4d097dfaf73251
-    }
 
     private IEnumerator Move(Transform targetPosition)
     {
