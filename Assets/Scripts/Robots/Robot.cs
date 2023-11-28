@@ -47,7 +47,9 @@ public class Robot : MonoBehaviour
         _moveJob = StartCoroutine(Move(target.gameObject.transform.position));
         IsUsing = true;
         _handler.SetTarget(target);
-        print(target.gameObject.name);
+        print(target.gameObject.name);     
+
+
     }
 
     private IEnumerator Move(Vector3 targetPosition)
