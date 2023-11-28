@@ -45,11 +45,9 @@ public class RobotMover : MonoBehaviour
         _moveOreJob = StartCoroutine(MoveOre(_startPosition,getTargetDistance));
     }
 
-    public void PutOre(){
+    public void PutOre(Ore ore){
         if (_moveOreJob != null)
             StopCoroutine(_moveOreJob);
-        _target.position = _storage;
-
     }
 
     private IEnumerator MoveOre(Vector3 destination,float getTargetDistance){

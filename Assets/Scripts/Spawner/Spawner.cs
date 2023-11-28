@@ -6,6 +6,7 @@ using UnityEngine.Events;
 public class Spawner : ObjectPool
 {
     [SerializeField] private GameObject[] _prefabs;
+    [SerializeField] private Robot[] _robots;
     [SerializeField] private float _delay;
     [SerializeField] private float _minX;
     [SerializeField] private float _maxX;
@@ -15,6 +16,22 @@ public class Spawner : ObjectPool
     [SerializeField] private int _maxAmount;
 
     public event UnityAction<Ore> OreSpawned;
+
+    private void OnEnable()
+    {
+        for (int i = 0; i < _robots.Length; i++)
+        {
+            _robots[i].OreBrought += ChangeActiveSelf;
+        }
+    }
+
+    private void OnDisable()
+    {
+        for (int i = 0; i < _robots.Length; i++)
+        {
+            _robots[i].OreBrought -= ChangeActiveSelf;
+        }
+    }
 
     private void Start(){
         Initialize(_prefabs);
@@ -44,5 +61,10 @@ public class Spawner : ObjectPool
 
             yield return delay;
         }
+    }
+
+    private void ChangeActiveSelf(Ore ore)
+    {
+        ore.gameObject.SetActive(false);
     }
 }

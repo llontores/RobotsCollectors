@@ -5,13 +5,20 @@ using System.Linq;
 
 public class RobotsAdministrator : MonoBehaviour
 {
-    [SerializeField] private Robot[] _robots;
+    [SerializeField] private Transform _base;
+    [SerializeField] private Robot _robotsPrefab;
+    [SerializeField] private Robot[] _inputRobots;
 
     private Queue<Ore> _ores = new Queue<Ore>();
+    private List<Robot> _robots = new List<Robot>();
 
     private void OnEnable()
     {
-        for (int i = 0; i < _robots.Length; i++)
+        for (int i = 0; i < _inputRobots.Length; i++)
+        {
+            _robots.Add(_inputRobots[i]);
+        }
+        for (int i = 0; i < _robots.Count; i++)
         {
             _robots[i].StateChanged += TryAskRobot;
         }
@@ -19,7 +26,7 @@ public class RobotsAdministrator : MonoBehaviour
 
     private void OnDisable()
     {
-        for (int i = 0; i < _robots.Length; i++)
+        for (int i = 0; i < _robots.Count; i++)
         {
             _robots[i].StateChanged -= TryAskRobot;
         }
@@ -41,5 +48,11 @@ public class RobotsAdministrator : MonoBehaviour
             Ore currentOre = _ores.Dequeue();
             result.BringOre(currentOre);
         }
+    }
+
+    public void TryAddRobot()
+    {
+        Robot addedRobot = Instantiate(_robotsPrefab, _base.position,Quaternion.identity);
+        _robots.Add(addedRobot);     
     }
 }
