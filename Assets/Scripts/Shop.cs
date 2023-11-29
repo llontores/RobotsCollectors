@@ -28,6 +28,7 @@ public class Shop : MonoBehaviour
                 if (Physics.Raycast(ray, out hit))
                 {
                     collectorsBase = hit.collider.GetComponent<CollectorsBase>();
+                    print(collectorsBase == null);
 
                     if (collectorsBase != null)
                     {
