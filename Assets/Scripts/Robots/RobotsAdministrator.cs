@@ -5,7 +5,8 @@ using System.Linq;
 
 public class RobotsAdministrator : MonoBehaviour
 {
-    [SerializeField] private Transform _base;
+    [SerializeField] private Transform _newRobotsSpawnpoint ;
+    [SerializeField] private Transform _oresReceiver;
     [SerializeField] private Robot _robotsPrefab;
     [SerializeField] private Robot[] _inputRobots;
     [SerializeField] private Transform _storage;
@@ -18,7 +19,7 @@ public class RobotsAdministrator : MonoBehaviour
         for (int i = 0; i < _inputRobots.Length; i++)
         {
             _robots.Add(_inputRobots[i]);
-            _robots[i].SetBase(_base, _storage);
+            _robots[i].SetBase(_oresReceiver, _storage);
         }
     }
 
@@ -58,8 +59,8 @@ public class RobotsAdministrator : MonoBehaviour
 
     public void TryAddRobot()
     {
-        Robot addedRobot = Instantiate(_robotsPrefab, _base.position,Quaternion.identity);
-        addedRobot.SetBase(_base, _storage);
+        Robot addedRobot = Instantiate(_robotsPrefab, _newRobotsSpawnpoint.position,Quaternion.identity);
+        addedRobot.SetBase(_oresReceiver, _storage);
         _robots.Add(addedRobot);
         TryAskRobot();
     }

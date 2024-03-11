@@ -7,17 +7,16 @@ using UnityEngine.Events;
 public class Robot : MonoBehaviour
 {
     [SerializeField] private RobotCollisionHandler _handler;
-    [SerializeField] private float _getTargetDistance;
     public bool IsUsing { get; private set; }
     public event UnityAction<Ore> OreBrought;
+    public event UnityAction<bool,Vector3> MovingStateChanged;
     public event UnityAction StateChanged;
 
     private Transform _storage;
-    private Transform _startPosition;
+    private Transform _oresReceiver;
     private RobotMover _mover;
     private Ore _target;
     private Coroutine _moveJob;
-    private Vector3 _targetPosition;
 
     private void OnEnable()
     {
@@ -39,16 +38,17 @@ public class Robot : MonoBehaviour
     public void BringOre(Ore target)
     {
         _target = target;
-        _mover.SetParametres(_target.gameObject.transform, _storage.position, _startPosition.position);
-        _moveJob = StartCoroutine(Move(_target.gameObject.transform));
+        _mover.SetParametres(_target.gameObject.transform, _storage.position, _oresReceiver.position);
+        MovingStateChanged?.Invoke(true,_target.gameObject.transform.position);
+        //_moveJob = StartCoroutine(Move(_target.gameObject.transform));
         IsUsing = true;
         _handler.SetTarget(target);
         _handler.SetTarget(_target);
     }
 
-    public void SetBase(Transform robotsBase,Transform storage)
+    public void SetBase(Transform receiver,Transform storage)
     {
-        _startPosition = robotsBase;
+        _oresReceiver = receiver;
         _storage = storage;
     }
 
@@ -59,27 +59,29 @@ public class Robot : MonoBehaviour
     }
 
 
-    private IEnumerator Move(Transform targetPosition)
-    {
-        while(Vector3.Distance(transform.position,targetPosition.position) > _getTargetDistance)
-        {
-            _mover.Move(targetPosition.position);
+    //private IEnumerator Move(Transform targetPosition)
+    //{
+    //    while(Vector3.Distance(transform.position,targetPosition.position) > _getTargetDistance)
+    //    {
+    //        _mover.Move(targetPosition.position);
 
-            yield return null;
-        }
-    }
+    //        yield return null;
+    //    }
+    //}
 
     private void GetBack()
     {
-        EndMoveJob();
-        _mover.PickUpOre(_getTargetDistance);
-        _moveJob = StartCoroutine(Move(_startPosition));
+        //EndMoveJob();
+        _mover.PickUpOre();
+        MovingStateChanged?.Invoke(false, _oresReceiver.position);
+        MovingStateChanged?.Invoke(true, _oresReceiver.position);
+        //_moveJob = StartCoroutine(Move(_oresReceiver));
     }
 
     private void GetBase()
     {
         if(IsUsing == true)
-            EndMoveJob();
+            MovingStateChanged?.Invoke(false, _target.gameObject.transform.position);
         OreBrought?.Invoke(_target);
         IsUsing = false;
         StateChanged?.Invoke();

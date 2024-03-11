@@ -45,7 +45,7 @@ public class Shop : MonoBehaviour
 
                 _newBaseFlag.position = Camera.main.ScreenToWorldPoint(new Vector3(mousePosition.x,
                 mousePosition.y, Camera.main.nearClipPlane));
-                collectorsBase.SetNewBaseFlag(_newBaseFlag);
+                //collectorsBase.SetNewBaseFlag(_newBaseFlag);
                 _clicksCounter = 0;
             }
 

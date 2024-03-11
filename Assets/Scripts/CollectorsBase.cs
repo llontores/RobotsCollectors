@@ -38,12 +38,12 @@ public class CollectorsBase : MonoBehaviour
     private void CountOres(int oresAmount)
     {
         _oresAmount = oresAmount;
-        TryBuildNewBase();
+        //TryBuildNewBase();
     }
 
     private void TryBuildNewBase()
     {
-        if (_newBaseFlag == null)
+        if (_newBaseFlag != null)
             if (_oresAmount >= _newBasePrice)
                 print("сейчас я отправлю робота чтобы он построил новую базу на " + _newBaseFlag.position);
     }

@@ -7,21 +7,26 @@ public class RobotMover : MonoBehaviour
     [SerializeField] private float _speed;
     [SerializeField] private Transform _inventoryPoint;
     [SerializeField] private RobotCollisionHandler _handler;
+    [SerializeField] private float _getTargetDistance;
 
     private Vector3 _destination;
     private Transform _target;
     private Coroutine _moveOreJob;
+    private Coroutine _moveJob;
     private Vector3 _storage;
     private Vector3 _startPosition;
     private Robot _robot;
     private void OnEnable()
     {
-        _robot.OreBrought += PutOre; 
+        _robot.OreBrought += PutOre;
+        _robot.MovingStateChanged += ControlMoving;
     }
 
     private void OnDisable()
     {
         _robot.OreBrought -= PutOre;
+        _robot.MovingStateChanged -= ControlMoving;
+
     }
 
     private void Awake()
@@ -35,14 +40,38 @@ public class RobotMover : MonoBehaviour
         _startPosition = startPosition;
     }
 
-    public void Move(Vector3 target){
-        Vector3 direction = (target - transform.position).normalized;
-        transform.Translate(direction * _speed * Time.deltaTime);
+    //public void Move(Vector3 target){
+    //    //Vector3 direction = (target - transform.position).normalized;
+    //    //transform.Translate(direction * _speed * Time.deltaTime);
+    //    Vector3.MoveTowards(transform.position, target, _speed * Time.deltaTime);
+    //    transform.LookAt(target);
+    //}
+
+    private void ControlMoving(bool isMoving,Vector3 targetPosition)
+    {
+        if (isMoving)
+            _moveJob = StartCoroutine(Move(targetPosition));
+        else if(isMoving == false)
+            StopCoroutine(_moveJob);
     }
 
-    public void PickUpOre(float getTargetDistance)
+    private IEnumerator Move(Vector3 targetPosition)
     {
-        _moveOreJob = StartCoroutine(MoveOre(_startPosition,getTargetDistance));
+        while (Vector3.Distance(transform.position, targetPosition) > _getTargetDistance)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition, _speed * Time.deltaTime);
+            //Vector3 direction = (targetPosition - transform.position).normalized;
+            //transform.Translate(direction * _speed * Time.deltaTime);
+
+            yield return null;
+        }
+    }
+
+
+
+    public void PickUpOre()
+    {
+        _moveOreJob = StartCoroutine(MoveOre(_startPosition));
     }
 
     public void PutOre(Ore ore){
@@ -50,13 +79,18 @@ public class RobotMover : MonoBehaviour
             StopCoroutine(_moveOreJob);
     }
 
-    private IEnumerator MoveOre(Vector3 destination,float getTargetDistance){
+    private IEnumerator MoveOre(Vector3 destination){
 
-        while(Vector3.Distance(transform.position, destination) > getTargetDistance )
+        while(true)
         {
             _target.position = _inventoryPoint.position;
 
             yield return null;
         }
+    }
+
+    private void Update()
+    {
+        print(Move(Vector3.zero) == null);
     }
 }
