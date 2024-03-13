@@ -72,8 +72,8 @@ public class Robot : MonoBehaviour
     private void GetBack()
     {
         //EndMoveJob();
-        _mover.PickUpOre();
         MovingStateChanged?.Invoke(false, _oresReceiver.position);
+        _mover.PickUpOre();
         MovingStateChanged?.Invoke(true, _oresReceiver.position);
         //_moveJob = StartCoroutine(Move(_oresReceiver));
     }

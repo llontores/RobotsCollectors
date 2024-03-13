@@ -14,7 +14,10 @@ public class RobotCollisionHandler : MonoBehaviour
         if (collision.collider.TryGetComponent(out Ore ore))
         {
             if (ore == _target)
+            {
                 GetOre?.Invoke();
+                print("я коснулся руды");
+            }
             
         }
     }

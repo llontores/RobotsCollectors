@@ -88,9 +88,4 @@ public class RobotMover : MonoBehaviour
             yield return null;
         }
     }
-
-    private void Update()
-    {
-        print(Move(Vector3.zero) == null);
-    }
 }
