@@ -7,23 +7,15 @@ using UnityEngine.Events;
 public class OresCounter : MonoBehaviour
 {
     [SerializeField] private string _staticText;
-    [SerializeField] private Robot[] _robots;
     [SerializeField] private TMP_Text _text;
 
     private int _counter;
+    private List<Robot> _robots = new List<Robot>();
     public event UnityAction<int> OreCollected;
-
-    private void OnEnable()
-    {
-        for (int i = 0; i < _robots.Length; i++)
-        {
-            _robots[i].OreBrought += IncreaseOres;
-        }
-    }
 
     private void OnDisable()
     {
-        for (int i = 0; i < _robots.Length; i++)
+        for (int i = 0; i < _robots.Count; i++)
         {
             _robots[i].OreBrought -= IncreaseOres;
         }
@@ -40,5 +32,11 @@ public class OresCounter : MonoBehaviour
     {
         _counter -= ores;
         _text.text = _staticText + _counter.ToString();
+    }
+
+    public void AddRobot(Robot newRobot)
+    {
+        _robots.Add(newRobot);
+        newRobot.OreBrought += IncreaseOres;
     }
 }

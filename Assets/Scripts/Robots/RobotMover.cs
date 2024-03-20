@@ -47,19 +47,19 @@ public class RobotMover : MonoBehaviour
     //    transform.LookAt(target);
     //}
 
-    private void ControlMoving(bool isMoving,Vector3 targetPosition)
+    private void ControlMoving(bool isMoving,Transform target)
     {
         if (isMoving)
-            _moveJob = StartCoroutine(Move(targetPosition));
+            _moveJob = StartCoroutine(Move(target));
         else if(isMoving == false)
             StopCoroutine(_moveJob);
     }
 
-    private IEnumerator Move(Vector3 targetPosition)
+    private IEnumerator Move(Transform targetPosition)
     {
-        while (Vector3.Distance(transform.position, targetPosition) > _getTargetDistance)
+        while (Vector3.Distance(transform.position, targetPosition.position) > _getTargetDistance)
         {
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, _speed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition.position, _speed * Time.deltaTime);
             //Vector3 direction = (targetPosition - transform.position).normalized;
             //transform.Translate(direction * _speed * Time.deltaTime);
 
@@ -77,6 +77,7 @@ public class RobotMover : MonoBehaviour
     public void PutOre(Ore ore){
         if (_moveOreJob != null)
             StopCoroutine(_moveOreJob);
+        ore.gameObject.SetActive(false);
     }
 
     private IEnumerator MoveOre(Vector3 destination){

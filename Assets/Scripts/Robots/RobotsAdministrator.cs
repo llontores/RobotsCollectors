@@ -10,6 +10,7 @@ public class RobotsAdministrator : MonoBehaviour
     [SerializeField] private Robot _robotsPrefab;
     [SerializeField] private Robot[] _inputRobots;
     [SerializeField] private Transform _storage;
+    [SerializeField] private OresCounter _oresCounter;
 
     private Queue<Ore> _ores = new Queue<Ore>();
     private List<Robot> _robots = new List<Robot>();
@@ -20,6 +21,7 @@ public class RobotsAdministrator : MonoBehaviour
         {
             _robots.Add(_inputRobots[i]);
             _robots[i].SetBase(_oresReceiver, _storage);
+            _oresCounter.AddRobot(_robots[i]);
         }
     }
 
@@ -28,7 +30,7 @@ public class RobotsAdministrator : MonoBehaviour
 
         for (int i = 0; i < _robots.Count; i++)
         {
-            _robots[i].StateChanged += TryAskRobot;
+            _robots[i].WorkingStateChanged += TryAskRobot;
         }
     }
 
@@ -36,7 +38,7 @@ public class RobotsAdministrator : MonoBehaviour
     {
         for (int i = 0; i < _robots.Count; i++)
         {
-            _robots[i].StateChanged -= TryAskRobot;
+            _robots[i].WorkingStateChanged -= TryAskRobot;
         }
     }
 
@@ -63,5 +65,7 @@ public class RobotsAdministrator : MonoBehaviour
         addedRobot.SetBase(_oresReceiver, _storage);
         _robots.Add(addedRobot);
         TryAskRobot();
+        addedRobot.WorkingStateChanged += TryAskRobot;
+        _oresCounter.AddRobot(addedRobot);  
     }
 }

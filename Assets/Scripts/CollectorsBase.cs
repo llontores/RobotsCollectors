@@ -20,13 +20,6 @@ public class CollectorsBase : MonoBehaviour
     {
         _counter.OreCollected -= CountOres;
     }
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.TryGetComponent(out Ore ore))
-        {
-            ore.gameObject.SetActive(false);
-        }
-    }
 
     public void SetNewBaseFlag(Transform flagPosition)
     {

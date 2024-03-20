@@ -156,6 +156,7 @@ MonoBehaviour:
   _speed: 5
   _inventoryPoint: {fileID: 5935744748169486702}
   _handler: {fileID: 6962270160912090189}
+  _getTargetDistance: 0.1
 --- !u!114 &2932837726055686701
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -169,9 +170,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _handler: {fileID: 6962270160912090189}
-  _storage: {fileID: 0}
-  _startPosition: {fileID: 0}
-  _getTargetDistance: 0.1
 --- !u!114 &6962270160912090189
 MonoBehaviour:
   m_ObjectHideFlags: 0

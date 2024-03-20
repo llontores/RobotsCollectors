@@ -7,12 +7,13 @@ using UnityEngine.Events;
 public class Robot : MonoBehaviour
 {
     [SerializeField] private RobotCollisionHandler _handler;
-    public bool IsUsing { get; private set; }
+    public bool IsUsing => _isUsing;
     public event UnityAction<Ore> OreBrought;
-    public event UnityAction<bool,Vector3> MovingStateChanged;
-    public event UnityAction StateChanged;
+    public event UnityAction<bool, Transform> MovingStateChanged;
+    public event UnityAction WorkingStateChanged;
 
     private Transform _storage;
+    private bool _isUsing;
     private Transform _oresReceiver;
     private RobotMover _mover;
     private Ore _target;
@@ -23,7 +24,7 @@ public class Robot : MonoBehaviour
         _handler.GetOre += GetBack;
         _handler.GetBaseBack += GetBase;
     }
-     
+
     private void OnDisable()
     {
         _handler.GetOre -= GetBack;
@@ -33,29 +34,22 @@ public class Robot : MonoBehaviour
     private void Awake()
     {
         _mover = GetComponent<RobotMover>();
-        IsUsing = false;
+        _isUsing = false;
     }
     public void BringOre(Ore target)
     {
         _target = target;
         _mover.SetParametres(_target.gameObject.transform, _storage.position, _oresReceiver.position);
-        MovingStateChanged?.Invoke(true,_target.gameObject.transform.position);
+        MovingStateChanged?.Invoke(true, target.gameObject.transform);
         //_moveJob = StartCoroutine(Move(_target.gameObject.transform));
-        IsUsing = true;
+        _isUsing = true;
         _handler.SetTarget(target);
-        _handler.SetTarget(_target);
     }
 
-    public void SetBase(Transform receiver,Transform storage)
+    public void SetBase(Transform receiver, Transform storage)
     {
         _oresReceiver = receiver;
         _storage = storage;
-    }
-
-    private void EndMoveJob()
-    {
-        if (_moveJob != null)
-            StopCoroutine(_moveJob);
     }
 
 
@@ -72,18 +66,20 @@ public class Robot : MonoBehaviour
     private void GetBack()
     {
         //EndMoveJob();
-        MovingStateChanged?.Invoke(false, _oresReceiver.position);
+        MovingStateChanged?.Invoke(false, _oresReceiver);
         _mover.PickUpOre();
-        MovingStateChanged?.Invoke(true, _oresReceiver.position);
+        MovingStateChanged?.Invoke(true, _oresReceiver);
         //_moveJob = StartCoroutine(Move(_oresReceiver));
     }
 
     private void GetBase()
     {
-        if(IsUsing == true)
-            MovingStateChanged?.Invoke(false, _target.gameObject.transform.position);
-        OreBrought?.Invoke(_target);
-        IsUsing = false;
-        StateChanged?.Invoke();
+        if (IsUsing)
+        {
+            MovingStateChanged?.Invoke(false, _target.gameObject.transform);
+            OreBrought?.Invoke(_target);
+            _isUsing = false;
+            WorkingStateChanged?.Invoke();
+        }
     }
 }

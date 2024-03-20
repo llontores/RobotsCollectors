@@ -33,32 +33,39 @@ public class Spawner : ObjectPool
         }
     }
 
-    private void Start(){
+    private void Start()
+    {
         Initialize(_prefabs);
         StartCoroutine(SpawnOres());
     }
 
-    private IEnumerator SpawnOres(){
+    private IEnumerator SpawnOres()
+    {
         WaitForSeconds delay = new WaitForSeconds(_delay);
         GameObject resource;
-        int amount = Random.Range(_minAmount,_maxAmount);
+        int amount = Random.Range(_minAmount, _maxAmount);
         float xPos;
         float zPos;
 
-        while(true){
+        while (true)
+        {
 
-            for(int i = 0; i < amount; i++){
+            for (int i = 0; i < amount; i++)
+            {
 
-                if(TryGetObject(out resource)){
+                if (TryGetObject(out resource))
+                {
 
                     resource.SetActive(true);
-                    xPos = Random.Range(_minX + transform.position.x,_maxX + transform.position.x);
-                    zPos = Random.Range(_minZ + transform.position.z,_maxZ + transform.position.z);
-                    resource.transform.position = new Vector3(xPos,transform.position.y,zPos);
+                    xPos = Random.Range(_minX + transform.position.x, _maxX + transform.position.x);
+                    zPos = Random.Range(_minZ + transform.position.z, _maxZ + transform.position.z);
+                    resource.transform.position = new Vector3(xPos, transform.position.y, zPos);
                     OreSpawned?.Invoke(resource.GetComponent<Ore>());
                 }
             }
 
+            print("заспавнено" + amount);
+            amount = Random.Range(_minAmount, _maxAmount);
             yield return delay;
         }
     }

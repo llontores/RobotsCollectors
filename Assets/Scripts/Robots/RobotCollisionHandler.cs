@@ -16,7 +16,6 @@ public class RobotCollisionHandler : MonoBehaviour
             if (ore == _target)
             {
                 GetOre?.Invoke();
-                print("я коснулся руды");
             }
             
         }
@@ -24,8 +23,10 @@ public class RobotCollisionHandler : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.TryGetComponent(out CollectorsBase collectorsBase))        
+        if(other.TryGetComponent(out CollectorsBase collectorsBase))
+        {
             GetBaseBack?.Invoke();
+        }
     }
 
     public void SetTarget(Ore target)
