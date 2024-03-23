@@ -1,17 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class OresCounter : MonoBehaviour
 {
-    [SerializeField] private string _staticText;
-    [SerializeField] private TMP_Text _text;
-
-    private int _counter;
+    [SerializeField] private Shop _shop;
+    [SerializeField] private RobotsAdministrator _robotsAdministrator;
+    private int _counter = 0;
     private List<Robot> _robots = new List<Robot>();
-    public event UnityAction<int> OreCollected;
+    public void AddRobot(Robot newRobot)
+    {
+        _robots.Add(newRobot);
+        newRobot.OreBrought += IncreaseOres;
+    }
+
+    public void IncreaseOres(Ore ore)
+    {
+        _counter++;
+        TryBuyNewRobot();
+    }
 
     private void OnDisable()
     {
@@ -21,22 +28,17 @@ public class OresCounter : MonoBehaviour
         }
     }
 
-    private void IncreaseOres(Ore ore)
+    private void TryBuyNewRobot()
     {
-        _counter++;
-        _text.text = _staticText + _counter.ToString();
-        OreCollected?.Invoke(_counter);
+        if (_counter >= _shop.RobotPrice)
+        {
+            _robotsAdministrator.TryAddRobot();
+            _counter -= _shop.RobotPrice;
+        }
     }
 
-    public void SpendOres(int ores)
+    private void Update()
     {
-        _counter -= ores;
-        _text.text = _staticText + _counter.ToString();
-    }
-
-    public void AddRobot(Robot newRobot)
-    {
-        _robots.Add(newRobot);
-        newRobot.OreBrought += IncreaseOres;
+        print(_counter);
     }
 }

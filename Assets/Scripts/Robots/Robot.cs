@@ -21,13 +21,13 @@ public class Robot : MonoBehaviour
 
     private void OnEnable()
     {
-        _handler.GetOre += GetBack;
+        _handler.GetOre += GoBack;
         _handler.GetBaseBack += GetBase;
     }
 
     private void OnDisable()
     {
-        _handler.GetOre -= GetBack;
+        _handler.GetOre -= GoBack;
         _handler.GetBaseBack -= GetBase;
     }
 
@@ -63,7 +63,7 @@ public class Robot : MonoBehaviour
     //    }
     //}
 
-    private void GetBack()
+    private void GoBack()
     {
         //EndMoveJob();
         MovingStateChanged?.Invoke(false, _oresReceiver);

@@ -5,7 +5,7 @@ using System.Linq;
 
 public class RobotsAdministrator : MonoBehaviour
 {
-    [SerializeField] private Transform _newRobotsSpawnpoint ;
+    [SerializeField] private Transform _newRobotsSpawnpoint;
     [SerializeField] private Transform _oresReceiver;
     [SerializeField] private Robot _robotsPrefab;
     [SerializeField] private Robot[] _inputRobots;
@@ -15,7 +15,8 @@ public class RobotsAdministrator : MonoBehaviour
     private Queue<Ore> _ores = new Queue<Ore>();
     private List<Robot> _robots = new List<Robot>();
 
-    private void Awake()
+
+    private void OnEnable()
     {
         for (int i = 0; i < _inputRobots.Length; i++)
         {
@@ -23,10 +24,6 @@ public class RobotsAdministrator : MonoBehaviour
             _robots[i].SetBase(_oresReceiver, _storage);
             _oresCounter.AddRobot(_robots[i]);
         }
-    }
-
-    private void OnEnable()
-    {
 
         for (int i = 0; i < _robots.Count; i++)
         {
@@ -61,11 +58,11 @@ public class RobotsAdministrator : MonoBehaviour
 
     public void TryAddRobot()
     {
-        Robot addedRobot = Instantiate(_robotsPrefab, _newRobotsSpawnpoint.position,Quaternion.identity);
+        Robot addedRobot = Instantiate(_robotsPrefab, _newRobotsSpawnpoint.position, Quaternion.identity);
         addedRobot.SetBase(_oresReceiver, _storage);
-        _robots.Add(addedRobot);
         TryAskRobot();
         addedRobot.WorkingStateChanged += TryAskRobot;
-        _oresCounter.AddRobot(addedRobot);  
+        _robots.Add(addedRobot);
+        _oresCounter.AddRobot(addedRobot);
     }
 }
