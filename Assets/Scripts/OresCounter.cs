@@ -36,9 +36,4 @@ public class OresCounter : MonoBehaviour
             _counter -= _shop.RobotPrice;
         }
     }
-
-    private void Update()
-    {
-        print(_counter);
-    }
 }

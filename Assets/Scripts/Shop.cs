@@ -10,7 +10,7 @@ public class Shop : MonoBehaviour
     public int RobotPrice => _robotPrice;
 
     private Transform _newBaseFlag;
-    private int _clicksCounter;
+    private int _clicksCounter = 0;
 
     private void Update()
     {
@@ -18,20 +18,20 @@ public class Shop : MonoBehaviour
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
-            CollectorsBase collectorsBase = null;
+            CollectorsBase collectorsBase;
 
             if (_clicksCounter == 0)
             {
-                if (Physics.Raycast(ray, out hit))
+                if (Physics.Raycast(ray, out hit, Mathf.Infinity))
                 {
+                    //print(hit.collider.gameObject.name);
                     collectorsBase = hit.collider.GetComponent<CollectorsBase>();
-                    print(collectorsBase == null);
 
                     if (collectorsBase != null)
                     {
                         _clicksCounter++;
                         print("я кликнул на базу" + collectorsBase.gameObject.name);
-                    }             
+                    }
                     else
                         _clicksCounter = 0;
                 }
