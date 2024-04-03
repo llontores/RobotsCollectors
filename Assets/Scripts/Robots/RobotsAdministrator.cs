@@ -11,6 +11,7 @@ public class RobotsAdministrator : MonoBehaviour
     [SerializeField] private Robot[] _inputRobots;
     [SerializeField] private Transform _storage;
     [SerializeField] private OresCounter _oresCounter;
+    [SerializeField] private Spawner _spawner;
 
     private Queue<Ore> _ores = new Queue<Ore>();
     private List<Robot> _robots = new List<Robot>();
@@ -49,9 +50,9 @@ public class RobotsAdministrator : MonoBehaviour
     {
         Robot result = _robots.FirstOrDefault(robot => robot.IsUsing == false);
 
-        if (result != null && _ores.Count > 0)
+        if (result != null && _spawner.QueueCount > 0)
         {
-            Ore currentOre = _ores.Dequeue();
+            Ore currentOre = _spawner.DequeueOres();
             result.BringOre(currentOre);
         }
     }
