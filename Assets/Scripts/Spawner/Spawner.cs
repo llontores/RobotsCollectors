@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Spawner : ObjectPool
+public abstract class Spawner : ObjectPool
 {
     [SerializeField] private GameObject[] _prefabs;
     [SerializeField] private float _delay;
@@ -14,7 +14,8 @@ public class Spawner : ObjectPool
     [SerializeField] private int _minAmount;
     [SerializeField] private int _maxAmount;
 
-    public event UnityAction<Ore> OreSpawned;
+    private Queue<Ore> _spawnedOres = new Queue<Ore>();
+    public int QueueCount => _spawnedOres.Count;
 
     private void Start()
     {
@@ -43,13 +44,17 @@ public class Spawner : ObjectPool
                     xPos = Random.Range(_minX + transform.position.x, _maxX + transform.position.x);
                     zPos = Random.Range(_minZ + transform.position.z, _maxZ + transform.position.z);
                     resource.transform.position = new Vector3(xPos, transform.position.y, zPos);
-                    OreSpawned?.Invoke(resource.GetComponent<Ore>());
+                    _spawnedOres.Enqueue(resource.GetComponent<Ore>());
                 }
             }
-
-            print("заспавнено" + amount);
             amount = Random.Range(_minAmount, _maxAmount);
             yield return delay;
         }
+    }
+
+    public Ore DequeueOres()
+    {
+        Ore ore = _spawnedOres.Dequeue();
+        return ore;
     }
 }
